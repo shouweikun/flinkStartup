@@ -5,7 +5,7 @@ import org.apache.flink.streaming.connectors.elasticsearch.{ElasticsearchSink, I
 /**
   * Created by john_liu on 2018/4/7.
   */
-object initSink {
+object InitSink {
   /**
     * config合法性检查
     * @param propList 需要检查属性的List

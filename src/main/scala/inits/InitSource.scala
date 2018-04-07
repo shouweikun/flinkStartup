@@ -9,7 +9,7 @@ import org.apache.flink.streaming.util.serialization.{DeserializationSchema, Ser
 /**
   * Created by john_liu on 2018/4/7.
   */
-object initSource {
+object InitSource {
   /**
     * prop合法性检查
     *
