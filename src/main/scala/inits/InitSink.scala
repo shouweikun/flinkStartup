@@ -1,5 +1,6 @@
 package inits
 
+import esUtils.{EsIndex, POJOIndexRequestBuilder}
 import org.apache.flink.streaming.connectors.elasticsearch.{ElasticsearchSink, IndexRequestBuilder}
 
 /**
@@ -8,6 +9,7 @@ import org.apache.flink.streaming.connectors.elasticsearch.{ElasticsearchSink, I
 object InitSink {
   /**
     * config合法性检查
+    *
     * @param propList 需要检查属性的List
     * @param config
     */
@@ -21,6 +23,7 @@ object InitSink {
 
   /**
     * 构造ElasticSearch 的 Sink
+    *
     * @param config
     * @param indexRequestBuilder
     * @tparam T
@@ -30,5 +33,21 @@ object InitSink {
 
     vaildConfig(List("bulk.flush.max.actions", "cluster.name"), config)
     new ElasticsearchSink(config, indexRequestBuilder)
+  }
+
+  /**
+    * 构建基于POJO的ElasticSearch Sink
+    *
+    * @param config
+    * @param esIndex
+    * @param esOpType
+    * @param pojoIdFieldName
+    * @tparam T
+    * @return
+    */
+  def initPojoEsSink[T](config: java.util.Map[String, String], esIndex: EsIndex, esOpType: String = "index", pojoIdFieldName: Option[String] = None): ElasticsearchSink[T] = {
+    pojoIdFieldName.fold(initEsSink(config, new POJOIndexRequestBuilder[T](esIndex, esOpType)))(name => initEsSink(config, new POJOIndexRequestBuilder[T](esIndex, esOpType, name))
+    )
+
   }
 }
