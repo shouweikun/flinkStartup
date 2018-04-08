@@ -11,7 +11,7 @@ import org.apache.flink.streaming.api.TimeCharacteristic
   * Created by john_liu on 2018/4/7.
   */
 trait Kafka2Es[A, B] {
-  def main(args: Array[String]): Unit = {
+  def kafka2Es: Unit = {
 
     //初始化Flink 环境
     val timeCharacteristic = TimeCharacteristic.ProcessingTime
@@ -45,9 +45,9 @@ trait Kafka2Es[A, B] {
       .map(mapKafkaRecord2SinkData(_))
       .addSink(sink)
   }
-
   //todo 定义kafka原始数据到sink时的最终数据的映射
 
   def mapKafkaRecord2SinkData[A, B](kafkaRecord: A): B
+
 
 }

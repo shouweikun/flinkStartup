@@ -1,6 +1,6 @@
 package inits
 
-import esUtils.{EsIndex, POJOIndexRequestBuilder}
+import esUtils.{EsIndex, JsonKvIndexRequestBuilder, POJOIndexRequestBuilder}
 import org.apache.flink.streaming.connectors.elasticsearch.{ElasticsearchSink, IndexRequestBuilder}
 
 /**
@@ -50,4 +50,19 @@ object InitSink {
     )
 
   }
+
+  /**
+    * 基于kv形式构建ElasticSearch Sink
+    * 其中k是id
+    * v是要写入的json
+    * kv 以(String,String)的形式传入
+    * @param config
+    * @param esIndex
+    * @param esOpType
+    * @return
+    */
+  def initJsonKvEsSink(config: java.util.Map[String, String], esIndex: EsIndex, esOpType: String = "index"): ElasticsearchSink[(String, String)] = {
+    initEsSink(config, new JsonKvIndexRequestBuilder(esIndex, esOpType))
+  }
+
 }
